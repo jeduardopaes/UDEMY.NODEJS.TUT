@@ -1,24 +1,31 @@
-console.log('starting app.js');
+//console.log('starting app.js');
 
 const fs = require('fs');
 const _ = require('lodash');
+const yargs = require('yargs');
 
 const notes = require('./notes.js');
 
+const argv = yargs.argv;
+
 //========= FIM DOS IMPORTS ===========================================
 
-let comando = process.argv[2];
+let comando = argv._[0];
 
-console.log("Comando :" +comando);
+//console.log("Comando :" +comando);
 
 if(comando === 'add'){
-    console.log("Adicionando nova nota!");
+    if(argv.title && argv.body){
+        notes.addNote(argv.title, argv.body);
+    }else{
+        console.log("Necessário --title <titulo da nota> e --body <corpo da nota>");
+    }
 }else if(comando === 'list'){
-    console.log("Mostrando lista..");
+    notes.getAll();
 }else if(comando === 'remove'){
-    console.log("Removendo nota!!!");
+    notes.removeNote(argv.title);
 }else if(comando === 'read'){
-    console.log("Mostrando nota");
+    notes.getNote(argv.title);
 }else if(comando === 'help'){
     console.log("Comandos possíveis: list, add, remove, read!");
 }else{
