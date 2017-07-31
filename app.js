@@ -5,6 +5,8 @@ const _ = require('lodash');
 
 const notes = require('./notes.js');
 
+//========= FIM DOS IMPORTS ===========================================
+
 let comando = process.argv[2];
 
 console.log("Comando :" +comando);
