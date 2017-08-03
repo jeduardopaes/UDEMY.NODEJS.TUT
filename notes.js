@@ -1,80 +1,51 @@
 //console.log('starting notes.js');
 const fs = require('fs');
 
-let notes = [];
-
 let addNote = (title, body) => {
     
-    loadNotes();
+    let notes = loadNotes();
 
     let note = {
         title,
         body
     }
 
-    if(checkIfTitleAlreadyExist(title)){
-        console.log("Titulo da nota já existe, favor alterar Titulo da nova nota.");
-    }else{
+    if(!checkIfTitleAlreadyExist(title)){
         notes.push(note);
-        saveNotes();
-        console.log("Nota adicionada com sucesso!");
+        saveNotes(notes);
+        return note;
     }
     
 };
 
-let saveNotes = () => {
+let saveNotes = (notes) => {
     fs.writeFileSync("notes-data.json", JSON.stringify(notes));
 };
 
 let getAll = () => {
 
-    loadNotes();
+    let notes = loadNotes();
 
-    notes.forEach(note => {
-        console.log(`================================
-        \nTítulo: ${note.title}
-        \nConteúdo: ${note.body}
-        \n================================`);
-    });
+    return notes;
 };
 
 let removeNote = (title) =>{
 
-    loadNotes();
+    let notes = loadNotes();
 
-    note = getNote(title);
-
-    if(note){
-        let index = notes.indexOf(note);
-        notes.splice(index , 1);
-        console.log("Nota excluida com sucesso!");
-    }
-
-    saveNotes();
+    notes_filtrado = notes.filter((note) => note.title != title);
     
+    saveNotes(notes_filtrado);
+
+    return notes.length > notes_filtrado.length;
 
 };
 
 let getNote = (title) => {
 
-    loadNotes();
-    
-    let resposta = "Nenhuma nota encontrada com este título: \""+title+"\" .";
-    let nota_encontrada;
+    let notes = loadNotes();
 
-    notes.forEach((note, index) =>{
-        if(note.title === title){
-            resposta =`================================
-            \nTítulo: ${note.title}
-            \nConteúdo: ${note.body}
-            \n================================`;
-            nota_encontrada = note;
-        }
-    });
-
-    console.log (resposta);
-
-    return nota_encontrada;
+    return notes.find((note) => note.title === title);
 };
 
 let checkIfTitleAlreadyExist = (title_passado) =>{
@@ -95,7 +66,6 @@ let loadNotes = () => {
         notes = JSON.parse(fs.readFileSync('notes-data.json'));
         return notes;
     }catch(e){
-        // console.log("ERRO: Arquivo não encontrado!", e);
         return [];
     }
 };
