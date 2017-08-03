@@ -11,8 +11,6 @@ const argv = yargs.argv;
 //========= FIM DOS IMPORTS ===========================================
 
 
-notes.loadNotes();
-
 let comando = argv._[0];
 
 //console.log("Comando :" +comando);
@@ -33,4 +31,5 @@ if(comando === 'add'){
     console.log("Comandos possíveis: list, add, remove, read!");
 }else{
     console.log("Comando inválido.");
+    console.log("Comandos possíveis: list, add, remove, read!");
 }
